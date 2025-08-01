@@ -28,6 +28,7 @@ class User extends Authenticatable
         'phone',
         'bio',
         'profile_image',
+        'cv_path',
     ];
 
     /**

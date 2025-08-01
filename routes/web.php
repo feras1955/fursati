@@ -27,30 +27,38 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Jobs routes
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobs.show');
-Route::post('/jobs/{id}/bookmark', [JobController::class, 'toggleBookmark'])->name('jobs.bookmark');
-Route::post('/jobs/{id}/apply', [JobController::class, 'apply'])->name('jobs.apply');
 
-// Profile routes
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+// Jobs routes (تتطلب تسجيل دخول)
+Route::middleware('auth')->group(function () {
+    Route::post('/jobs/{id}/bookmark', [JobController::class, 'toggleBookmark'])->name('jobs.bookmark');
+    Route::post('/jobs/{id}/apply', [JobController::class, 'apply'])->name('jobs.apply');
+});
 
-// Settings routes
-Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile');
-Route::post('/settings/notifications', [SettingsController::class, 'updateNotifications'])->name('settings.notifications');
-Route::post('/settings/privacy', [SettingsController::class, 'updatePrivacy'])->name('settings.privacy');
-Route::post('/settings/language', [SettingsController::class, 'updateLanguage'])->name('settings.language');
-Route::post('/settings/security', [SettingsController::class, 'updateSecurity'])->name('settings.security');
-Route::post('/settings/change-language', [SettingsController::class, 'changeLanguage'])->name('settings.change-language');
-Route::post('/settings/export-data', [SettingsController::class, 'exportData'])->name('settings.export-data');
-Route::post('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete-account');
-Route::post('/settings/logout-all', [SettingsController::class, 'logoutAllDevices'])->name('settings.logout-all');
+// Profile routes (تتطلب تسجيل دخول)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
 
-// Bookmarks routes
-Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
-Route::post('/bookmarks/clear-all', [BookmarkController::class, 'clearAll'])->name('bookmarks.clear-all');
-Route::post('/bookmarks/export', [BookmarkController::class, 'export'])->name('bookmarks.export');
+// Settings routes (تتطلب تسجيل دخول)
+Route::middleware('auth')->group(function () {
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile');
+    Route::post('/settings/notifications', [SettingsController::class, 'updateNotifications'])->name('settings.notifications');
+    Route::post('/settings/privacy', [SettingsController::class, 'updatePrivacy'])->name('settings.privacy');
+    Route::post('/settings/language', [SettingsController::class, 'updateLanguage'])->name('settings.language');
+    Route::post('/settings/security', [SettingsController::class, 'updateSecurity'])->name('settings.security');
+    Route::post('/settings/change-language', [SettingsController::class, 'changeLanguage'])->name('settings.change-language');
+    Route::post('/settings/export-data', [SettingsController::class, 'exportData'])->name('settings.export-data');
+    Route::post('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete-account');
+    Route::post('/settings/logout-all', [SettingsController::class, 'logoutAllDevices'])->name('settings.logout-all');
+
+    // Bookmarks routes
+    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+    Route::post('/bookmarks/clear-all', [BookmarkController::class, 'clearAll'])->name('bookmarks.clear-all');
+    Route::post('/bookmarks/export', [BookmarkController::class, 'export'])->name('bookmarks.export');
+});
 
 // FAQ routes
 Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');

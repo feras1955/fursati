@@ -6,20 +6,30 @@
 <!-- Profile Page (مطابق للكود الأصلي) -->
 <section id="profile" class="page-container active" style="padding:0;">
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="page-header">
             <h2 class="page-title">الملف الشخصي</h2>
-            <button class="btn btn-outline">
+            <a href="{{ route('profile.edit') }}" class="btn btn-outline">
                 <i class="fas fa-edit"></i> تعديل الملف
-            </button>
+            </a>
         </div>
         <div class="profile-container">
             <div class="profile-sidebar">
                 <div class="profile-header">
                     <div class="profile-avatar">
-                        <i class="fas fa-user"></i>
+                        @if($user->profile_image)
+                            <img src="{{ Storage::url($user->profile_image) }}" alt="صورة الملف الشخصي">
+                        @else
+                            <i class="fas fa-user"></i>
+                        @endif
                     </div>
-                    <h3 class="profile-name">عمر أحمد</h3>
-                    <p class="profile-title">مطور تطبيقات جوال</p>
+                    <h3 class="profile-name">{{ $user->name }}</h3>
+                    <p class="profile-title">{{ $user->role == 'job_seeker' ? 'باحث عن عمل' : 'صاحب عمل' }}</p>
                 </div>
                 <div class="profile-stats">
                     <div class="stat-item">
@@ -37,16 +47,18 @@
                 </div>
                 <div class="profile-bio">
                     <h4>نبذة عني</h4>
-                    <p>مطور تطبيقات جوال بخبرة 4 سنوات في React Native وFlutter. حاصل على شهادة البكالوريوس في علوم الحاسوب من جامعة الملك سعود. أتمتع بمهارات قوية في حل المشكلات والعمل الجماعي.</p>
+                    <p>{{ $user->bio ?: 'لم يتم إضافة نبذة شخصية بعد.' }}</p>
                 </div>
             </div>
             <div class="profile-content">
-                <h3 class="section-title">السيرة الذاتية</h3>
+                <h3 class="section-title">المعلومات الشخصية</h3>
                 <div class="bio-content">
-                    <p><strong>التعليم:</strong> بكالوريوس علوم الحاسوب - جامعة الملك سعود (2016-2020)</p>
-                    <p><strong>المهارات التقنية:</strong> React Native, Flutter, JavaScript, Dart, Redux, Firebase, Git</p>
-                    <p><strong>اللغات:</strong> العربية (اللغة الأم), الإنجليزية (متقدمة)</p>
-                    <p><strong>الشهادات:</strong> مطور React Native معتمد من Meta, شهادة Flutter من Google</p>
+                    <p><strong>البريد الإلكتروني:</strong> {{ $user->email }}</p>
+                    <p><strong>الدولة:</strong> {{ $user->country ? $user->country->name : 'غير محدد' }}</p>
+                    <p><strong>مستوى التعليم:</strong> {{ $user->educationLevel ? $user->educationLevel->name : 'غير محدد' }}</p>
+                    <p><strong>سنوات الخبرة:</strong> {{ $user->work_experience }} سنوات</p>
+                    <p><strong>رقم الهاتف:</strong> {{ $user->phone ?: 'غير محدد' }}</p>
+                    <p><strong>تاريخ التسجيل:</strong> {{ $user->created_at->format('Y/m/d') }}</p>
                 </div>
                 <div class="applied-jobs">
                     <h3 class="section-title">الوظائف المتقدم لها</h3>

@@ -12,15 +12,38 @@
         </div>
         <div style="max-width: 500px; margin: 2rem auto; background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow);">
             <h3 class="section-title" style="text-align: center;">تسجيل الدخول</h3>
+            
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul style="margin: 0; padding-right: 20px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group">
                     <label>البريد الإلكتروني</label>
-                    <input type="email" class="form-control" name="email" placeholder="ادخل بريدك الإلكتروني" required autofocus>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="ادخل بريدك الإلكتروني" required autofocus>
+                    @error('email')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label>كلمة المرور</label>
-                    <input type="password" class="form-control" name="password" placeholder="ادخل كلمة المرور" required>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="ادخل كلمة المرور" required>
+                    @error('password')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="form-group" style="text-align: left;">
                     <div class="checkbox-group">
