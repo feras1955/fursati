@@ -21,6 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'country_id',
+        'education_level_id',
+        'work_experience',
+        'phone',
+        'bio',
+        'profile_image',
     ];
 
     /**
@@ -40,5 +47,41 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'work_experience' => 'integer',
     ];
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function educationLevel()
+    {
+        return $this->belongsTo(EducationLevel::class);
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class, 'business_man_id');
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class);
+    }
+
+    public function favoriteJobs()
+    {
+        return $this->hasMany(FavoriteJob::class);
+    }
+
+    public function scopeJobSeekers($query)
+    {
+        return $query->where('role', 'job_seeker');
+    }
+
+    public function scopeBusinessMen($query)
+    {
+        return $query->where('role', 'business_man');
+    }
 }
