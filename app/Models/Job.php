@@ -20,8 +20,12 @@ class Job extends Model
         'country_of_residence',
         'business_man_id',
         'description',
+        'requirements',
         'salary_min',
         'salary_max',
+        'salary_range',
+        'job_type',
+        'skills',
         'status',
     ];
 

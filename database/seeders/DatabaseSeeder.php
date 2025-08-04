@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             EducationLevelSeeder::class,
             WorkFieldSeeder::class,
             CompanySeeder::class,
+            JobSeeder::class,
             FAQSeeder::class,
             PolicySeeder::class,
         ]);

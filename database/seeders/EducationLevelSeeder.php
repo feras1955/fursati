@@ -18,7 +18,7 @@ class EducationLevelSeeder extends Seeder
         ];
 
         foreach ($levels as $level) {
-            EducationLevel::create(['name' => $level]);
+            EducationLevel::firstOrCreate(['name' => $level]);
         }
     }
 } 

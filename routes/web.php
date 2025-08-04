@@ -51,8 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings/security', [SettingsController::class, 'updateSecurity'])->name('settings.security');
     Route::post('/settings/change-language', [SettingsController::class, 'changeLanguage'])->name('settings.change-language');
     Route::post('/settings/export-data', [SettingsController::class, 'exportData'])->name('settings.export-data');
-    Route::post('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete-account');
-    Route::post('/settings/logout-all', [SettingsController::class, 'logoutAllDevices'])->name('settings.logout-all');
+    Route::delete('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete-account');
+    Route::post('/settings/logout-all-devices', [SettingsController::class, 'logoutAllDevices'])->name('settings.logout-all-devices');
 
     // Bookmarks routes
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');

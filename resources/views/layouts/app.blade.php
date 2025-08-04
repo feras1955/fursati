@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'فرصتي - منصة الوظائف العربية')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -90,6 +91,18 @@
                 </div>
                 
                 <div class="footer-col">
+                    <h3>الإعدادات</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ route('settings.index') }}#profile-section"><i class="fas fa-user"></i> الملف الشخصي</a></li>
+                        <li><a href="{{ route('settings.index') }}#notifications-section"><i class="fas fa-bell"></i> إعدادات الإشعارات</a></li>
+                        <li><a href="{{ route('settings.index') }}#language-section"><i class="fas fa-globe"></i> إعدادات اللغة</a></li>
+                        <li><a href="{{ route('settings.index') }}#faq-section"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
+                        <li><a href="{{ route('settings.index') }}#help-section"><i class="fas fa-headset"></i> المساعدة والدعم</a></li>
+                        <li><a href="{{ route('settings.index') }}#privacy-section"><i class="fas fa-shield-alt"></i> الخصوصية والأمان</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
                     <h3>الدعم</h3>
                     <ul class="footer-links">
                         <li><a href="{{ route('faq.index') }}"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
@@ -117,5 +130,42 @@
 
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('scripts')
+    
+    <script>
+    // جعل روابط التذييل تعمل مع الشريط الجانبي في صفحة الإعدادات
+    document.addEventListener('DOMContentLoaded', function() {
+        // التحقق من وجود hash في الرابط عند تحميل الصفحة
+        if (window.location.hash && window.location.pathname.includes('/settings')) {
+            const sectionId = window.location.hash.substring(1).replace('-section', '');
+            if (typeof showSection === 'function') {
+                setTimeout(() => {
+                    showSection(sectionId);
+                }, 100);
+            }
+        }
+        
+        // معالجة النقر على روابط التذييل التي تحتوي على hash
+        const footerLinks = document.querySelectorAll('a[href*="#"]');
+        footerLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.includes('/settings#')) {
+                    const sectionId = href.split('#')[1].replace('-section', '');
+                    
+                    // إذا كنا في صفحة الإعدادات، نعرض القسم مباشرة
+                    if (window.location.pathname.includes('/settings')) {
+                        e.preventDefault();
+                        if (typeof showSection === 'function') {
+                            showSection(sectionId);
+                        }
+                        // تحديث الرابط في شريط العناوين
+                        window.history.pushState({}, '', href);
+                    }
+                    // إذا لم نكن في صفحة الإعدادات، سيتم التوجه إلى الصفحة عادياً
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html> 

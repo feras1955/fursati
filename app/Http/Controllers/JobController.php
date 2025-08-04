@@ -10,6 +10,7 @@ use App\Models\FavoriteJob;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class JobController extends Controller
@@ -20,28 +21,41 @@ class JobController extends Controller
             ->where('status', 'active');
 
         // فلترة حسب المعايير
-        if ($request->filled('title')) {
-            $query->where('title', 'like', '%' . $request->title . '%');
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('description', 'like', '%' . $searchTerm . '%');
+            });
         }
 
-        if ($request->filled('work_field_id')) {
-            $query->where('work_field_id', $request->work_field_id);
+        if ($request->filled('field')) {
+            $query->whereHas('workField', function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->field . '%');
+            });
         }
 
-        if ($request->filled('country_of_graduation')) {
-            $query->where('country_of_graduation', $request->country_of_graduation);
+        if ($request->filled('location')) {
+            $query->where('work_place', 'like', '%' . $request->location . '%');
         }
 
-        if ($request->filled('country_of_residence')) {
-            $query->where('country_of_residence', $request->country_of_residence);
+        if ($request->filled('type')) {
+            $query->where('job_type', $request->type);
         }
 
-        if ($request->filled('education_level_id')) {
-            $query->where('education_level_id', $request->education_level_id);
-        }
-
-        if ($request->filled('gender_preference')) {
-            $query->where('gender_preference', $request->gender_preference);
+        if ($request->filled('salary')) {
+            $salaryRange = $request->salary;
+            if ($salaryRange == '3000-5000') {
+                $query->where('salary_range', 'like', '%3000%')->orWhere('salary_range', 'like', '%5000%');
+            } elseif ($salaryRange == '5000-8000') {
+                $query->where('salary_range', 'like', '%5000%')->orWhere('salary_range', 'like', '%8000%');
+            } elseif ($salaryRange == '8000-12000') {
+                $query->where('salary_range', 'like', '%8000%')->orWhere('salary_range', 'like', '%12000%');
+            } elseif ($salaryRange == '12000-18000') {
+                $query->where('salary_range', 'like', '%12000%')->orWhere('salary_range', 'like', '%18000%');
+            } elseif ($salaryRange == '18000+') {
+                $query->where('salary_range', 'like', '%18000%')->orWhere('salary_range', 'like', '%22000%');
+            }
         }
 
         $jobs = $query->latest()->paginate(10);
@@ -87,27 +101,36 @@ class JobController extends Controller
         $job = Job::findOrFail($id);
         $userId = Auth::id();
 
-        $favorite = FavoriteJob::where('job_id', $id)
+        // Check if bookmark exists in job_bookmarks table
+        $bookmark = DB::table('job_bookmarks')
+            ->where('job_id', $id)
             ->where('user_id', $userId)
             ->first();
 
-        if ($favorite) {
-            $favorite->delete();
-            $message = 'تم إزالة الوظيفة من المفضلة';
-            $isFavorite = false;
+        if ($bookmark) {
+            // Remove bookmark
+            DB::table('job_bookmarks')
+                ->where('job_id', $id)
+                ->where('user_id', $userId)
+                ->delete();
+            $message = 'تم إزالة الوظيفة من المحفوظات';
+            $isBookmarked = false;
         } else {
-            FavoriteJob::create([
+            // Add bookmark
+            DB::table('job_bookmarks')->insert([
                 'job_id' => $id,
-                'user_id' => $userId
+                'user_id' => $userId,
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
-            $message = 'تم إضافة الوظيفة للمفضلة';
-            $isFavorite = true;
+            $message = 'تم إضافة الوظيفة للمحفوظات';
+            $isBookmarked = true;
         }
 
         return response()->json([
             'success' => true,
             'message' => $message,
-            'isFavorite' => $isFavorite
+            'isBookmarked' => $isBookmarked
         ]);
     }
 

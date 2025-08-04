@@ -28,7 +28,7 @@ class WorkFieldSeeder extends Seeder
         ];
 
         foreach ($fields as $field) {
-            WorkField::create(['name' => $field]);
+            WorkField::firstOrCreate(['name' => $field]);
         }
     }
 } 
