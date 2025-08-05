@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Route;
 | API Routes
 |--------------------------------------------------------------------------
 |
+| ⚠️ ملاحظة هامة:
+| جميع المسارات في هذا الملف تُسبق تلقائياً بـ /api من Laravel.
+| أي أن المسار Route::get('/ar/api/all-companies') يصبح فعلياً:
+|   http://localhost:8000/api/ar/api/all-companies
+| وليس http://localhost:8000/ar/api/all-companies
+|
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "api" middleware group. Make something great!

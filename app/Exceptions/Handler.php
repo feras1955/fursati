@@ -45,4 +45,21 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Customize error response for API requests (JSON).
+     */
+    public function render($request, \Throwable $exception)
+    {
+        if ($request->expectsJson()) {
+            if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException ||
+                $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+                return response()->json([
+                    'message' => 'Not Found',
+                ], 404);
+            }
+            // يمكن إضافة معالجة أخطاء أخرى هنا
+        }
+        return parent::render($request, $exception);
+    }
 }

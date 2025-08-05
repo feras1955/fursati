@@ -11,12 +11,12 @@
         <div class="settings-container">
             <div class="settings-sidebar">
                 <ul class="settings-menu">
-                    <li><a href="#" class="menu-link active" onclick="var sections = document.querySelectorAll('.settings-section'); sections.forEach(s => s.style.display = 'none'); document.getElementById('profile-section').style.display = 'block'; document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active')); this.classList.add('active'); return false;"><i class="fas fa-user"></i> الملف الشخصي</a></li>
-                    <li><a href="#" class="menu-link" onclick="var sections = document.querySelectorAll('.settings-section'); sections.forEach(s => s.style.display = 'none'); document.getElementById('notifications-section').style.display = 'block'; document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active')); this.classList.add('active'); return false;"><i class="fas fa-bell"></i> إعدادات الإشعارات</a></li>
-                    <li><a href="#" class="menu-link" onclick="var sections = document.querySelectorAll('.settings-section'); sections.forEach(s => s.style.display = 'none'); document.getElementById('language-section').style.display = 'block'; document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active')); this.classList.add('active'); return false;"><i class="fas fa-globe"></i> إعدادات اللغة</a></li>
-                    <li><a href="#" class="menu-link" onclick="var sections = document.querySelectorAll('.settings-section'); sections.forEach(s => s.style.display = 'none'); document.getElementById('faq-section').style.display = 'block'; document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active')); this.classList.add('active'); return false;"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
-                    <li><a href="#" class="menu-link" onclick="var sections = document.querySelectorAll('.settings-section'); sections.forEach(s => s.style.display = 'none'); document.getElementById('help-section').style.display = 'block'; document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active')); this.classList.add('active'); return false;"><i class="fas fa-headset"></i> المساعدة والدعم</a></li>
-                    <li><a href="#" class="menu-link" onclick="var sections = document.querySelectorAll('.settings-section'); sections.forEach(s => s.style.display = 'none'); document.getElementById('privacy-section').style.display = 'block'; document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active')); this.classList.add('active'); return false;"><i class="fas fa-shield-alt"></i> الخصوصية والأمان</a></li>
+                    <li><a href="#" class="menu-link active" data-section="profile-section"><i class="fas fa-user"></i> الملف الشخصي</a></li>
+                    <li><a href="#" class="menu-link" data-section="notifications-section"><i class="fas fa-bell"></i> إعدادات الإشعارات</a></li>
+                    <li><a href="#" class="menu-link" data-section="language-section"><i class="fas fa-globe"></i> إعدادات اللغة</a></li>
+                    <li><a href="#" class="menu-link" data-section="faq-section"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
+                    <li><a href="#" class="menu-link" data-section="help-section"><i class="fas fa-headset"></i> المساعدة والدعم</a></li>
+                    <li><a href="#" class="menu-link" data-section="privacy-section"><i class="fas fa-shield-alt"></i> الخصوصية والأمان</a></li>
                 </ul>
             </div>
             <div class="settings-content">
@@ -62,7 +62,7 @@
                         </div>
                         
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary btn-save">
+                            <button type="button" class="btn btn-primary btn-save" onclick="updateProfileSettings()">
                                 <i class="fas fa-save"></i> حفظ التغييرات
                             </button>
                             <button type="button" class="btn btn-secondary" onclick="resetForm()">
@@ -104,7 +104,9 @@
                                 الإشعارات المنبثقة في المتصفح
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
+                        <button type="button" class="btn btn-primary" onclick="updateNotificationSettings()">
+                            <i class="fas fa-save"></i> حفظ الإعدادات
+                        </button>
                     </form>
                 </div>
 
@@ -126,7 +128,9 @@
                                 <option value="ltr">من اليسار إلى اليمين (الإنجليزية)</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">حفظ اللغة</button>
+                        <button type="button" class="btn btn-primary" onclick="updateLanguageSettings()">
+                            <i class="fas fa-save"></i> حفظ إعدادات اللغة
+                        </button>
                     </form>
                 </div>
 
@@ -240,7 +244,9 @@
                                     السماح بالرسائل من أصحاب العمل
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-primary">حفظ إعدادات الخصوصية</button>
+                            <button type="button" class="btn btn-primary" onclick="updatePrivacySettings()">
+                                <i class="fas fa-save"></i> حفظ إعدادات الخصوصية
+                            </button>
                         </form>
                     </div>
 
@@ -260,7 +266,9 @@
                                 <label>تأكيد كلمة المرور الجديدة</label>
                                 <input type="password" name="new_password_confirmation" class="form-control" required>
                             </div>
-                            <button type="submit" class="btn btn-warning">تغيير كلمة المرور</button>
+                            <button type="button" class="btn btn-primary btn-change-password" onclick="updateSecuritySettings()">
+                                <i class="fas fa-key"></i> تغيير كلمة المرور
+                            </button>
                         </form>
                     </div>
 
@@ -268,9 +276,44 @@
                     <div class="privacy-subsection">
                         <h4>إجراءات الحساب</h4>
                         <div class="account-actions">
-                            <button class="btn btn-info" onclick="exportData()">تصدير بياناتي</button>
-                            <button class="btn btn-warning" onclick="logoutAllDevices()">تسجيل الخروج من جميع الأجهزة</button>
-                            <button class="btn btn-danger" onclick="deleteAccount()">حذف الحساب نهائياً</button>
+                            <div class="action-card">
+                                <div class="action-icon">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="action-content">
+                                    <h5>تصدير بياناتي</h5>
+                                    <p>احصل على نسخة من جميع بياناتك</p>
+                                </div>
+                                <button class="btn btn-outline-info" onclick="exportData()">
+                                    <i class="fas fa-download"></i> تصدير
+                                </button>
+                            </div>
+                            
+                            <div class="action-card">
+                                <div class="action-icon">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </div>
+                                <div class="action-content">
+                                    <h5>تسجيل الخروج من جميع الأجهزة</h5>
+                                    <p>إنهاء جميع جلسات تسجيل الدخول النشطة</p>
+                                </div>
+                                <button class="btn btn-outline-warning" onclick="logoutAllDevices()">
+                                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                                </button>
+                            </div>
+                            
+                            <div class="action-card danger">
+                                <div class="action-icon">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                                <div class="action-content">
+                                    <h5>حذف الحساب نهائياً</h5>
+                                    <p>حذف حسابك وجميع بياناتك نهائياً</p>
+                                </div>
+                                <button class="btn btn-outline-danger" onclick="deleteAccount()">
+                                    <i class="fas fa-trash-alt"></i> حذف الحساب
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -329,7 +372,322 @@
 </section>
 
 <script>
-// دالة بسيطة جداً لعرض الأقسام
+// كود محسن للقائمة الجانبية والنماذج في صفحة الإعدادات
+document.addEventListener('DOMContentLoaded', function() {
+    // تحديد العناصر المهمة
+    const menuLinks = document.querySelectorAll('.settings-menu .menu-link');
+    const settingsSections = document.querySelectorAll('.settings-section');
+    
+    // وظيفة لإظهار قسم معين وإخفاء الآخرين
+    function showSection(sectionId) {
+        // إخفاء جميع الأقسام أولاً
+        settingsSections.forEach(section => {
+            section.style.display = 'none';
+            section.classList.remove('active');
+        });
+        
+        // إظهار القسم المطلوب
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.style.display = 'block';
+            targetSection.classList.add('active');
+        }
+        
+        // تحديث حالة الروابط النشطة
+        menuLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('data-section') === sectionId) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    // إضافة مستمعات الأحداث للروابط
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sectionId = this.getAttribute('data-section');
+            if (sectionId) {
+                showSection(sectionId);
+            }
+        });
+    });
+    
+    // عرض القسم الأول افتراضياً
+    showSection('profile-section');
+});
+
+// دالة عرض الإشعارات
+function showNotification(message, type = 'success') {
+    // إزالة أي إشعارات سابقة
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notif => notif.remove());
+    
+    // إنشاء عنصر الإشعار
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="notification-close" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // إزالة الإشعار تلقائياً بعد 5 ثواني
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+// دالة إعادة تعيين النموذج
+function resetForm() {
+    const form = document.getElementById('profile-form');
+    if (form) {
+        form.reset();
+        showNotification('تم إعادة تعيين النموذج', 'info');
+    }
+}
+
+// تحديث إعدادات الملف الشخصي
+function updateProfileSettings() {
+    const form = document.getElementById('profile-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('.btn-save');
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    fetch('{{ route("settings.profile.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ التغييرات';
+        
+        if (data.success) {
+            showNotification('تم تحديث الملف الشخصي بنجاح', 'success');
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء الحفظ', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ التغييرات';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
+    });
+}
+
+// تحديث إعدادات الإشعارات
+function updateNotificationSettings() {
+    const form = document.getElementById('notifications-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="button"]');
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    fetch('{{ route("settings.notifications.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
+        
+        if (data.success) {
+            showNotification('تم تحديث إعدادات الإشعارات بنجاح', 'success');
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء الحفظ', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
+    });
+}
+
+// تحديث إعدادات اللغة
+function updateLanguageSettings() {
+    const form = document.getElementById('language-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="button"]');
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    fetch('{{ route("settings.language.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
+        
+        if (data.success) {
+            showNotification('تم تحديث إعدادات اللغة بنجاح', 'success');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء الحفظ', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
+    });
+}
+
+// تحديث إعدادات الأمان (تغيير كلمة المرور)
+function updateSecuritySettings() {
+    const form = document.getElementById('security-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('.btn-change-password');
+
+    // التحقق من كلمة المرور
+    const newPassword = form.querySelector('input[name="new_password"]').value;
+    const confirmPassword = form.querySelector('input[name="new_password_confirmation"]').value;
+
+    if (newPassword !== confirmPassword) {
+        showNotification('كلمة المرور الجديدة وتأكيدها غير متطابقين', 'error');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التغيير...';
+
+    fetch('{{ route("settings.security.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-key"></i> تغيير كلمة المرور';
+        
+        if (data.success) {
+            showNotification('تم تغيير كلمة المرور بنجاح', 'success');
+            form.reset();
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء تغيير كلمة المرور', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-key"></i> تغيير كلمة المرور';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
+    });
+}
+
+// إعداد وتفعيل النماذج
+function setupFormHandlers() {
+    console.log('🔧 جاري إعداد معالجات النماذج...');
+    
+    // نموذج الملف الشخصي
+    const profileForm = document.getElementById('profile-form');
+    console.log('📄 نموذج الملف الشخصي:', profileForm);
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            console.log('✅ تم الضغط على حفظ الملف الشخصي');
+            e.preventDefault();
+            updateProfileSettings();
+        });
+        console.log('✅ تم ربط نموذج الملف الشخصي');
+    } else {
+        console.log('❌ لم يتم العثور على نموذج الملف الشخصي');
+    }
+    
+    // نموذج إعدادات الإشعارات
+    const notificationsForm = document.getElementById('notifications-form');
+    console.log('🔔 نموذج الإشعارات:', notificationsForm);
+    if (notificationsForm) {
+        notificationsForm.addEventListener('submit', function(e) {
+            console.log('✅ تم الضغط على حفظ الإشعارات');
+            e.preventDefault();
+            updateNotificationSettings();
+        });
+        console.log('✅ تم ربط نموذج الإشعارات');
+    } else {
+        console.log('❌ لم يتم العثور على نموذج الإشعارات');
+    }
+    
+    // نموذج الخصوصية
+    const privacyForm = document.getElementById('privacy-form');
+    console.log('🔒 نموذج الخصوصية:', privacyForm);
+    if (privacyForm) {
+        privacyForm.addEventListener('submit', function(e) {
+            console.log('✅ تم الضغط على حفظ الخصوصية');
+            e.preventDefault();
+            updatePrivacySettings();
+        });
+        console.log('✅ تم ربط نموذج الخصوصية');
+    } else {
+        console.log('❌ لم يتم العثور على نموذج الخصوصية');
+    }
+    
+    // نموذج الأمان (تغيير كلمة المرور)
+    const securityForm = document.getElementById('security-form');
+    console.log('🔑 نموذج الأمان:', securityForm);
+    if (securityForm) {
+        securityForm.addEventListener('submit', function(e) {
+            console.log('✅ تم الضغط على تغيير كلمة المرور');
+            e.preventDefault();
+            updateSecuritySettings();
+        });
+        console.log('✅ تم ربط نموذج الأمان');
+    } else {
+        console.log('❌ لم يتم العثور على نموذج الأمان');
+    }
+    
+    // نموذج اللغة
+    const languageForm = document.getElementById('language-form');
+    console.log('🌍 نموذج اللغة:', languageForm);
+    if (languageForm) {
+        languageForm.addEventListener('submit', function(e) {
+            console.log('✅ تم الضغط على حفظ اللغة');
+            e.preventDefault();
+            updateLanguageSettings();
+        });
+        console.log('✅ تم ربط نموذج اللغة');
+    } else {
+        console.log('❌ لم يتم العثور على نموذج اللغة');
+    }
+    
+    console.log('✅ تم انتهاء إعداد معالجات النماذج');
+}
+
+// دالة بسيطة جداً لعرض الأقسام (للتوافق مع الكود القديم)
 function showSettingsSection(sectionId, clickedElement) {
     // إخفاء جميع الأقسام
     var allSections = document.getElementsByClassName('settings-section');
@@ -434,19 +792,18 @@ window.addEventListener('load', function() {
 }
 
 .settings-section {
-    display: none !important;
+    display: none;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     animation: fadeIn 0.3s ease-in-out;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
 }
 
 .settings-section.active {
-    display: block !important;
-    opacity: 1;
-}
-
-/* تأكد من أن القسم الأول يظهر افتراضياً */
-#profile-section {
     display: block !important;
     opacity: 1;
 }
@@ -751,13 +1108,115 @@ window.addEventListener('load', function() {
 
 .account-actions {
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-.account-actions button {
+.action-card {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    gap: 1rem;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.action-card.danger {
+    background: #fff5f5;
+    border-color: #fed7d7;
+}
+
+.action-card.danger:hover {
+    background: #fed7d7;
+}
+
+.action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.action-card .action-icon {
+    background: #007bff;
+    color: white;
+}
+
+.action-card:nth-child(2) .action-icon {
+    background: #ffc107;
+    color: white;
+}
+
+.action-card.danger .action-icon {
+    background: #dc3545;
+    color: white;
+}
+
+.action-content {
     flex: 1;
-    min-width: 200px;
+}
+
+.action-content h5 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.action-content p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.action-card .btn {
+    flex-shrink: 0;
+    min-width: 120px;
+    font-weight: 500;
+    border-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.action-card .btn:hover {
+    transform: scale(1.05);
+}
+
+/* تصميم خاص لزر تغيير كلمة المرور */
+.btn-change-password {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-change-password:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.btn-change-password:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
 }
 
 /* Notification Styles */
@@ -985,28 +1444,223 @@ function resetForm() {
     }
 }
 
+// دالة عرض الإشعارات
+function showNotification(message, type = 'success') {
+    // إزالة الإشعارات السابقة
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notif => notif.remove());
+    
+    // إنشاء إشعار جديد
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="notification-close" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // إزالة الإشعار تلقائياً بعد 5 ثوان
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+// تحديث إعدادات الملف الشخصي
 function updateProfileSettings() {
     const form = document.getElementById('profile-form');
     const formData = new FormData(form);
-    
-    fetch('{{ route("settings.profile") }}', {
+    const submitBtn = form.querySelector('button[type="button"]');
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    fetch('{{ route("settings.profile.update") }}', {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
         },
     })
     .then(response => response.json())
     .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ التغييرات';
+        
         if (data.success) {
-            alert('تم حفظ التغييرات بنجاح!');
+            showNotification('تم تحديث الملف الشخصي بنجاح', 'success');
         } else {
-            alert('حدث خطأ أثناء حفظ التغييرات');
+            showNotification(data.message || 'حدث خطأ أثناء الحفظ', 'error');
         }
     })
     .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ التغييرات';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
         console.error('Error:', error);
-        alert('حدث خطأ أثناء حفظ التغييرات');
+    });
+}
+
+// تحديث إعدادات الإشعارات
+function updateNotificationSettings() {
+    const form = document.getElementById('notifications-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="button"]');
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    fetch('{{ route("settings.notifications.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
+        
+        if (data.success) {
+            showNotification('تم تحديث إعدادات الإشعارات بنجاح', 'success');
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء الحفظ', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
+    });
+}
+
+// تحديث إعدادات الخصوصية
+function updatePrivacySettings() {
+    const form = document.getElementById('privacy-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="button"]');
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    fetch('{{ route("settings.privacy.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ إعدادات الخصوصية';
+        
+        if (data.success) {
+            showNotification('تم تحديث إعدادات الخصوصية بنجاح', 'success');
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء الحفظ', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ إعدادات الخصوصية';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
+    });
+}
+
+// تحديث إعدادات الأمان (تغيير كلمة المرور)
+function updateSecuritySettings() {
+    const form = document.getElementById('security-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="button"]');
+
+    // التحقق من كلمة المرور
+    const newPassword = form.querySelector('input[name="new_password"]').value;
+    const confirmPassword = form.querySelector('input[name="new_password_confirmation"]').value;
+
+    if (newPassword !== confirmPassword) {
+        showNotification('كلمة المرور الجديدة وتأكيدها غير متطابقين', 'error');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التغيير...';
+
+    fetch('{{ route("settings.security.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-key"></i> تغيير كلمة المرور';
+        
+        if (data.success) {
+            showNotification('تم تغيير كلمة المرور بنجاح', 'success');
+            form.reset();
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء تغيير كلمة المرور', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-key"></i> تغيير كلمة المرور';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
+    });
+}
+
+// تحديث إعدادات اللغة
+function updateLanguageSettings() {
+    const form = document.getElementById('language-form');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="button"]');
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    fetch('{{ route("settings.language.update") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ إعدادات اللغة';
+        
+        if (data.success) {
+            showNotification('تم تحديث إعدادات اللغة بنجاح', 'success');
+            setTimeout(() => location.reload(), 1000); // إعادة تحميل الصفحة لتطبيق التغييرات
+        } else {
+            showNotification(data.message || 'حدث خطأ أثناء الحفظ', 'error');
+        }
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ إعدادات اللغة';
+        showNotification('حدث خطأ في الاتصال بالخادم', 'error');
+        console.error('Error:', error);
     });
 }
 
@@ -1015,7 +1669,7 @@ function updateNotificationSettings() {
     const form = document.getElementById('notification-settings-form');
     const formData = new FormData(form);
     
-    fetch('{{ route("settings.notifications") }}', {
+    fetch('{{ route("settings.notifications.update") }}', {
         method: 'POST',
         body: formData,
         headers: {
@@ -1041,7 +1695,7 @@ function updatePrivacySettings() {
     const form = document.getElementById('privacy-settings-form');
     const formData = new FormData(form);
     
-    fetch('{{ route("settings.privacy") }}', {
+    fetch('{{ route("settings.privacy.update") }}', {
         method: 'POST',
         body: formData,
         headers: {
@@ -1067,7 +1721,7 @@ function updateLanguageSettings() {
     const form = document.getElementById('language-settings-form');
     const formData = new FormData(form);
     
-    fetch('{{ route("settings.language") }}', {
+    fetch('{{ route("settings.language.update") }}', {
         method: 'POST',
         body: formData,
         headers: {
@@ -1093,7 +1747,7 @@ function updateSecuritySettings() {
     const form = document.getElementById('security-settings-form');
     const formData = new FormData(form);
     
-    fetch('{{ route("settings.security") }}', {
+    fetch('{{ route("settings.security.update") }}', {
         method: 'POST',
         body: formData,
         headers: {
@@ -1269,7 +1923,7 @@ function updateLanguageSettings() {
     const form = document.getElementById('language-form');
     const formData = new FormData(form);
     
-    fetch('{{ route("settings.language") }}', {
+    fetch('{{ route("settings.language.update") }}', {
         method: 'POST',
         body: formData,
         headers: {

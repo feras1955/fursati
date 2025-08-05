@@ -13,15 +13,6 @@
         <div style="max-width: 500px; margin: 2rem auto; background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow);">
             <h3 class="section-title" style="text-align: center;">تسجيل الدخول</h3>
             
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul style="margin: 0; padding-right: 20px;">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             @if (session('success'))
                 <div class="alert alert-success">
@@ -44,6 +35,9 @@
                     @error('password')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
+                    @if ($errors->has('email') || $errors->has('password'))
+                        <span class="invalid-feedback" style="display:block; color:#dc3545; text-align:right; margin-top:8px;">البريد الإلكتروني أو كلمة المرور غير صحيحة.</span>
+                    @endif
                 </div>
                 <div class="form-group" style="text-align: left;">
                     <div class="checkbox-group">
@@ -51,7 +45,7 @@
                         <label for="remember">تذكرني</label>
                     </div>
                 </div>
-                <button class="btn btn-primary d-flex justify-content-center align-items-center" style="width: 100%; text-align: center;" type="submit">تسجيل الدخول</button>
+                <button class="btn btn-primary d-flex justify-content-center align-items-center" style="width: 100%; text-align: center; justify-content: center !important; align-items: center !important; display: flex;" type="submit"><span style="width: 100%; text-align: center;">تسجيل الدخول</span></button>
                 <div style="text-align: center; margin: 1.5rem 0;">
                     <a href="{{ route('password.request') }}" style="color: var(--primary);">نسيت كلمة المرور؟</a>
                 </div>

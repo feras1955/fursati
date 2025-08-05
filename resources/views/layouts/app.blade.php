@@ -107,7 +107,8 @@
                     <ul class="footer-links">
                         <li><a href="{{ route('faq.index') }}"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
                         <li><a href="{{ route('help.index') }}"><i class="fas fa-headset"></i> المساعدة والدعم</a></li>
-                        <li><a href="#"><i class="fas fa-shield-alt"></i> الخصوصية</a></li>
+                        <li><a href="http://127.0.0.1:8000/privacy">الخصوصية</a></li>
+                        <li><a href="{{ route('policy') }}">سياسات الاستخدام</a></li>
                         <li><a href="#"><i class="fas fa-file-alt"></i> الشروط والأحكام</a></li>
                     </ul>
                 </div>

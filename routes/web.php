@@ -44,11 +44,11 @@ Route::middleware('auth')->group(function () {
 // Settings routes (تتطلب تسجيل دخول)
 Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile');
-    Route::post('/settings/notifications', [SettingsController::class, 'updateNotifications'])->name('settings.notifications');
-    Route::post('/settings/privacy', [SettingsController::class, 'updatePrivacy'])->name('settings.privacy');
-    Route::post('/settings/language', [SettingsController::class, 'updateLanguage'])->name('settings.language');
-    Route::post('/settings/security', [SettingsController::class, 'updateSecurity'])->name('settings.security');
+    Route::post('/settings/profile/update', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
+    Route::post('/settings/notifications/update', [SettingsController::class, 'updateNotifications'])->name('settings.notifications.update');
+    Route::post('/settings/privacy/update', [SettingsController::class, 'updatePrivacy'])->name('settings.privacy.update');
+    Route::post('/settings/language/update', [SettingsController::class, 'updateLanguage'])->name('settings.language.update');
+    Route::post('/settings/security/update', [SettingsController::class, 'updateSecurity'])->name('settings.security.update');
     Route::post('/settings/change-language', [SettingsController::class, 'changeLanguage'])->name('settings.change-language');
     Route::post('/settings/export-data', [SettingsController::class, 'exportData'])->name('settings.export-data');
     Route::delete('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete-account');
@@ -66,6 +66,9 @@ Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
 // Help routes
 Route::get('/help', [HelpController::class, 'index'])->name('help.index');
 Route::post('/help/submit-ticket', [HelpController::class, 'submitTicket'])->name('help.submit-ticket');
+
+// Usage Policy Page
+Route::view('/policy', 'policy')->name('policy');
 
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -107,5 +110,10 @@ Route::prefix('api')->group(function () {
 
 // Fallback route for 404
 Route::fallback(function () {
+    if (request()->expectsJson()) {
+        return response()->json([
+            'message' => 'Not Found',
+        ], 404);
+    }
     return view('errors.404');
 });
