@@ -91,18 +91,6 @@
                 </div>
                 
                 <div class="footer-col">
-                    <h3>الإعدادات</h3>
-                    <ul class="footer-links">
-                        <li><a href="{{ route('settings.index') }}#profile-section"><i class="fas fa-user"></i> الملف الشخصي</a></li>
-                        <li><a href="{{ route('settings.index') }}#notifications-section"><i class="fas fa-bell"></i> إعدادات الإشعارات</a></li>
-                        <li><a href="{{ route('settings.index') }}#language-section"><i class="fas fa-globe"></i> إعدادات اللغة</a></li>
-                        <li><a href="{{ route('settings.index') }}#faq-section"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
-                        <li><a href="{{ route('settings.index') }}#help-section"><i class="fas fa-headset"></i> المساعدة والدعم</a></li>
-                        <li><a href="{{ route('settings.index') }}#privacy-section"><i class="fas fa-shield-alt"></i> الخصوصية والأمان</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
                     <h3>الدعم</h3>
                     <ul class="footer-links">
                         <li><a href="{{ route('faq.index') }}"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>

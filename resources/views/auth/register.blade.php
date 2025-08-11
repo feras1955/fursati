@@ -120,7 +120,11 @@
                     @enderror
                 </div>
                 
-                <button class="btn btn-primary d-flex justify-content-center align-items-center" style="width: 100%; text-align: center;" type="submit">إنشاء الحساب</button>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="display: inline-block; width: 100%; max-width: 320px; padding: 0.75rem 1.25rem;">
+                        إنشاء الحساب
+                    </button>
+                </div>
                 <div style="text-align: center; margin-top: 2rem;">
                     <p>لديك حساب بالفعل؟ <a href="{{ route('login') }}" style="color: var(--primary); font-weight: 600;">تسجيل الدخول</a></p>
                 </div>

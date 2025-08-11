@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             JobSeeder::class,
             FAQSeeder::class,
             PolicySeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
